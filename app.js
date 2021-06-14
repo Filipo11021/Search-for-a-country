@@ -68,8 +68,12 @@ function createCard(
 }
 
 function renderElements() {
-  document.querySelector('.search-input').value = ''
-  document.querySelector('.cardsWrap').innerHTML = ''
+  if ((document.querySelector('.search-input') != undefined)){
+    document.querySelector('.search-input').value = ''
+  }
+    if(document.querySelector('.cardsWrap') != undefined){
+      document.querySelector('.cardsWrap').innerHTML = ''
+    }
   const url = 'https://restcountries.eu/rest/v2/all'
   fetch(url)
     .then((response) => response.json())
@@ -111,9 +115,11 @@ function filter(t) {
 let currentName = 0
 
 function searchCountry(searchCountryValue, searchType) {
-  document.querySelector('.search-input').value = 0
+  if(document.querySelector('.search-input') != undefined){
+    document.querySelector('.search-input').value = ''
+  }
   let countryUrl = `https://restcountries.eu/rest/v2/${searchType}/${searchCountryValue}`
-  console.log(countryUrl)
+
   fetch(countryUrl)
     .then((response) => response.json())
     .then((data) => {
@@ -124,16 +130,14 @@ function searchCountry(searchCountryValue, searchType) {
          } else if (Array.isArray(data) == false) {
            dataCountry = data
          }
-         console.log(dataCountry)
          
-         
-         console.log(data)
+
          let curArr = []
       
              dataCountry.currencies.forEach((cu) => {
                curArr.push(cu.name)
              })
-             console.log(curArr)
+
 
             let lengArr = []
 
@@ -239,9 +243,16 @@ function searchCountry2(){
         })
       })
   }
-  document.querySelector('.search-input').value = ''
+  if (document.querySelector('.search-input') != undefined) {
+    document.querySelector('.search-input').value = ''
+  }
 }
-
+function renderLogo() {
+if(document.querySelector('.search-input') == undefined){
+updateMain()
+}
+  renderElements()
+}
 
 
 function updateMain(){
@@ -287,7 +298,9 @@ function clickCard(t){
   searchCountry(t.currentTarget.dataset.countryname, 'name')
 }
 
-document.querySelector('.logo').addEventListener('click', renderElements)
+document.querySelector('.logo').addEventListener('click', renderLogo)
+
+
 window.addEventListener('keyup', (e) => {
 if (e.key === 'Enter') {
   searchCountry2()
